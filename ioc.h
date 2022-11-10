@@ -19,7 +19,7 @@ public:
 	template<class Derived>
 	void Register(const char* key) {
 		if (m_map.find(key) != m_map.end()) {
-			// throw std::invalid_argument("this key has exist");
+			throw std::invalid_argument("this key has exist");
 		}
 		m_map.emplace(key, static_cast<std::shared_ptr<Base>>(std::make_shared<Derived>(key)));
 	}
