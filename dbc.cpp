@@ -6,9 +6,9 @@
 using namespace std;
 namespace fs = filesystem;
 void DbcToSql() {
-    fs::path current = fs::current_path() / "dbc";
+    fs::path current = getCurrentPath() / "dbc";
     if (!fs::exists(current)) {
-        cout << current << " is not exists, create it and move dbc files into it!" << endl;
+        cout << current << " is not exists, create it and move according files into it!" << endl;
         if (!fs::create_directories(current)) {
             cout << "create_directories " << current << " error!" << endl;
         }

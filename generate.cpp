@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <stdio.h>
 #include "ioc.h"
-#include "dbc.h"
+#include "global.h"
 #include "util.h"
 
 using namespace std;
@@ -11,7 +11,9 @@ namespace fs = filesystem;
 
 void create_dirs(const fs::path &path) {
     if (!fs::exists(path)) {
-        cout << path << " is not exists, create it and move dbc files into it!" << endl;
+		auto pos = path.string().find_last_of("/");
+		string fileType = (pos != string::npos) ? path.string().erase(0, pos + 1) : "unknown";
+        cout << path << " is not exists, create it and move " << fileType << " files into it!" << endl;
         if (!fs::create_directories(path)) {
             cout << "create_directories " << path << " error!" << endl;
         }
@@ -21,7 +23,7 @@ void create_dirs(const fs::path &path) {
 
 bool Generate(string name, uint32_t record_count, uint32_t string_block_size) {
     cout << "-------------" << __FUNCTION__ << " [" << name << "]" << endl;
-    fs::path binding = fs::current_path() / "binding";
+    fs::path binding = getCurrentPath() / "binding";
     string bdName = binding.string() + "/" + name + ".txt";
     if (!fs::exists(bdName)) {
         cout << "    [Err] " << bdName << " file not exists" << endl;
@@ -34,7 +36,7 @@ bool Generate(string name, uint32_t record_count, uint32_t string_block_size) {
         return false;
     }
 
-    fs::path header = fs::current_path() / "header";
+    fs::path header = getCurrentPath() / "header";
     string hPath = header.string() + "/" + name + ".h";
     string cppPath = header.string() + "/" + name + ".cpp";
     fstream h, cpp;
@@ -103,9 +105,9 @@ bool Convert(string path, string name) {
 
 int main() {
     cout << "######################################     start generate .h/.cpp     ######################################" << endl;
-    fs::path dbc = fs::current_path() / "dbc", binding = fs::current_path() / "binding", 
-    header = fs::current_path() / "header", sql = fs::current_path() / "sql";
-    create_dirs(dbc);
+    fs::path dbc = getCurrentPath() / "dbc", binding = getCurrentPath() / "binding", 
+    header = getCurrentPath() / "header", sql = getCurrentPath() / "sql";
+    // create_dirs(dbc);
     create_dirs(binding);
     create_dirs(header);
     create_dirs(sql);

@@ -10,8 +10,7 @@
 #include "ioc.h"
 #include "util.h"
 #include "progressbar.h"
-
-#define WDBC_HEADER     0x43424457
+#include "global.h"
 
 struct dbc_header
 {
@@ -36,8 +35,6 @@ public:
     virtual void DumpSql() = 0;
 };
 
-#include "header/Spell.h"
-
 template<typename record_type, uint32_t record_count, uint32_t string_block_size>
 class Dbc : public DbcInterface {
 public:
@@ -46,7 +43,7 @@ public:
         std::cout << "    [" << __FUNCTION__ << "] start: " << m_name << std::endl;
         std::cout << "        size: " << sizeof(m_file) << std::endl;
         std::string dbcFile = m_name + ".dbc";
-        std::filesystem::path dbc = std::filesystem::current_path() / "dbc" / dbcFile;
+        std::filesystem::path dbc = getCurrentPath() / "dbc" / dbcFile;
         std::cout << "        dbc file:" << dbc.string() << std::endl;
         FILE *f = fopen(dbc.string().c_str(), "rb");
         if(!f) {
@@ -69,10 +66,9 @@ public:
         //           << "        field_count:"       << h.field_count << std::endl
         //           << "        record_size:"       << h.record_size << std::endl
         //           << "        string_block_size:" << h.string_block_size << std::endl;
-        std::cout << "        Spell_record size:" << sizeof(Spell_record) << std::endl;
 
         std::string bdFile = m_name + ".txt";
-        std::filesystem::path bdPath = std::filesystem::current_path() / "binding" / bdFile;
+        std::filesystem::path bdPath = getCurrentPath() / "binding" / bdFile;
         std::fstream bd;
         bd.open(bdPath.string(), std::ios_base::in);
         if (!bd.is_open()) {
@@ -98,7 +94,7 @@ public:
     void DumpSql() override {
         std::cout << "    [" << __FUNCTION__ << "] start: " << m_name << std::endl;
         std::string sqlFile = m_name + ".sql";
-        std::filesystem::path sql = std::filesystem::current_path() / "sql" / sqlFile;
+        std::filesystem::path sql = getCurrentPath() / "sql" / sqlFile;
         std::cout << "        sql file:" << sql.string() << std::endl;
         FILE *f = fopen(sql.string().c_str(), "w");
         if (!f) {
@@ -106,7 +102,7 @@ public:
             return;
         }
 
-        const uint32_t SPELL_DBC_COLUMN_NUMS = m_file.header.field_count;
+        const uint32_t DBC_COLUMN_NUMS = m_file.header.field_count;
 
         std::cout << "        " << m_name << " - Creating the SQL table struct...\n";
 
@@ -116,7 +112,7 @@ public:
         fprintf(f, "DROP TABLE IF EXISTS `%s`;\n", m_name.c_str());
         fprintf(f, "CREATE TABLE `%s` (\n", m_name.c_str());
 
-        for(uint32_t i = 0; i < SPELL_DBC_COLUMN_NUMS; i++)
+        for(uint32_t i = 0; i < DBC_COLUMN_NUMS; i++)
         {
             if(m_translation[i][0] == "uint32_t")
                 fprintf(f, "    `%s` INT (11) UNSIGNED DEFAULT '0' NOT NULL,\n", m_translation[i][1].c_str());
@@ -150,10 +146,10 @@ public:
             if((j % SQL_INSERTS_PER_QUERY) == 0)
             {
                 fprintf(f, "\nINSERT INTO `%s` (", m_name.c_str());
-                for(uint32_t i = 0; i < SPELL_DBC_COLUMN_NUMS; i++)
+                for(uint32_t i = 0; i < DBC_COLUMN_NUMS; i++)
                 {
                     fprintf(f, "`%s`", m_translation[i][1].c_str());
-                    if(i != SPELL_DBC_COLUMN_NUMS - 1)
+                    if(i != DBC_COLUMN_NUMS - 1)
                         fprintf(f, ",");
                 }
                 fprintf(f, ") VALUES \n");
@@ -162,7 +158,7 @@ public:
             else
                 fprintf(f, ",(");
 
-            for(uint32_t i = 0; i < SPELL_DBC_COLUMN_NUMS; i++)
+            for(uint32_t i = 0; i < DBC_COLUMN_NUMS; i++)
             {
                 if(m_translation[i][0] == "uint32_t")
                     fprintf(f, "%u", *(uint32_t*)(((char*)&m_file.records[j]) + i * 4));
@@ -194,7 +190,7 @@ public:
                     fprintf(f, "\"%s\"", tstrSpell);
                 }
 
-                if(i != SPELL_DBC_COLUMN_NUMS - 1)
+                if(i != DBC_COLUMN_NUMS - 1)
                     fprintf(f, ",");
             }
 
@@ -209,7 +205,7 @@ public:
             ProgressSpell.Step();
         }
 
-        std::cout << std::endl << "        " << m_name << " - DONE\n\n";
+        std::cout << std::endl << "        " << m_name << " - DONE\n";
 
         fprintf(f, "\n");
         fprintf(f, "-- EOF\n");

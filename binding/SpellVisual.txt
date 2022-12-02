@@ -1,0 +1,16 @@
+uint ID
+uint precastKit
+uint castKit
+uint impactKit
+uint stateKit
+uint stateDoneKit
+uint channelKit
+uint hasMissile
+uint missileModel
+uint missilePathType
+uint missileDestinationAttachment
+uint missileSound
+uint animEventSoundID
+uint flags
+uint casterImpactKit
+uint targetImpactKit

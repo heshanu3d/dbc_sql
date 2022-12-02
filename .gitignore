@@ -1,2 +1,11 @@
 build
 .vscode
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+CMakeFiles/**
+dbc/**
+header/**
+sql/**
+generate
+main
