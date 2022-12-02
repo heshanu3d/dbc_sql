@@ -22,7 +22,7 @@ void DbcToSql() {
         string dbcName = dbcFileName.erase(dbcFileName.find("."));
         auto dbc = GetInstance(dbcName.c_str());
         if (!dbc) {
-            cout << "    [Err]" << dbcName << ".h & " << dbcName << ".cpp is not generate!" << endl;
+            cout << "    [Err]" << dbcName << ".h & " << dbcName << ".cpp is not linked!" << endl;
             continue;
         }
         dbc->Load();

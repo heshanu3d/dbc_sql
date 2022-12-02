@@ -9,7 +9,8 @@ add_custom_target(generate_header
     COMMAND ./generate
     DEPENDS generate
 )
-file(GLOB generatefiles "header/*.cpp")
+# file(GLOB generatefiles "header/*.cpp")
+file(GLOB generatefiles CONFIGURE_DEPENDS "header/*.cpp")
 message(STATUS ${generatefiles})
 
 add_executable(main main.cpp dbc.cpp ${generatefiles} progressbar.cpp)
