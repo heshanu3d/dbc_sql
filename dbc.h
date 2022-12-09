@@ -20,14 +20,22 @@ struct dbc_header
     uint32_t record_size; // sum (sizeof (field_type_i)) | 0 <= i < field_count. field_type_i is NOT defined in the files.
     uint32_t string_block_size;
 };
-
+#ifndef _UNIX_PACKED_
+#pragma pack(1)
+#endif
 template<typename record_type, uint32_t record_count, uint32_t string_block_size>
 struct dbc_file
 {
     dbc_header header; // static_assert (header.record_size == sizeof (record_type));
     record_type records[record_count];
     char string_block[string_block_size];
-}__attribute__((packed));
+}
+#ifdef _UNIX_PACKED_
+__attribute__((packed));
+#else
+;
+#pragma pack()
+#endif
 
 class DbcInterface {
 public:
@@ -50,9 +58,8 @@ public:
             std::cout << "        [Err] " << dbc << " file open failed" << std::endl;
             return;
         }
-        // dbc_header h;
+
         if(fread(&m_file, sizeof(m_file), 1, f) != 1) {
-        // if(fread(&h, sizeof(h), 1, f) != 1) {
             std::cout << "        [Err] " << dbc << " read " << m_name << ".dbc into m_file failed" << std::endl;
             return;
         }
@@ -61,11 +68,6 @@ public:
                   << "        field_count:"       << m_file.header.field_count << std::endl
                   << "        record_size:"       << m_file.header.record_size << std::endl
                   << "        string_block_size:" << m_file.header.string_block_size << std::endl;
-        // std::cout << "        magic:"             << h.magic << std::endl
-        //           << "        record_count:"      << h.record_count << std::endl
-        //           << "        field_count:"       << h.field_count << std::endl
-        //           << "        record_size:"       << h.record_size << std::endl
-        //           << "        string_block_size:" << h.string_block_size << std::endl;
 
         std::string bdFile = m_name + ".txt";
         std::filesystem::path bdPath = getCurrentPath() / "binding" / bdFile;
@@ -89,7 +91,6 @@ public:
             if (vec[0] == "int")   { m_translation[index][0] = "int32_t"; m_translation[index++][1] = vec[1]; continue; }
             if (vec[0] == "float") { m_translation[index][0] = "float"; m_translation[index++][1] = vec[1]; continue; }
         }
-        // m_translation[][]
     };
     void DumpSql() override {
         std::cout << "    [" << __FUNCTION__ << "] start: " << m_name << std::endl;
@@ -105,9 +106,6 @@ public:
         const uint32_t DBC_COLUMN_NUMS = m_file.header.field_count;
 
         std::cout << "        " << m_name << " - Creating the SQL table struct...\n";
-
-        // fprintf(f, "-- DBCtoSQL v%s\n\n", DBCTOSQL_VER);
-        // fprintf(f, "-- Web: %s\n\n\n", DBCTOSQL_WEB);
 
         fprintf(f, "DROP TABLE IF EXISTS `%s`;\n", m_name.c_str());
         fprintf(f, "CREATE TABLE `%s` (\n", m_name.c_str());

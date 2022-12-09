@@ -2,8 +2,13 @@ cmake_minimum_required(VERSION 3.16)
 project(my_dbc_sql)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_FLAGS "-m32")
-set(CMAKE_CXX_FLAGS "-m32")
+message(CMAKE_SYSTEM_NAME ": ${CMAKE_SYSTEM_NAME}")
+message(CMAKE_CXX_COMPILER_ID ": ${CMAKE_CXX_COMPILER_ID}")
+if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    set(CMAKE_C_FLAGS "-m32")
+    set(CMAKE_CXX_FLAGS "-m32")
+    add_definitions(-D_UNIX_PACKED_)
+endif()
 
 add_executable(generate generate.cpp)
 add_custom_target(generate_header

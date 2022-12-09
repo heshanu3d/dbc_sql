@@ -1,7 +1,9 @@
+out
 build
 cmake-build-debug
 .vscode
 .idea
+.vs
 CMakeCache.txt
 Makefile
 cmake_install.cmake

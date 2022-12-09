@@ -19,8 +19,98 @@ The converter contains two procedure:
   
 
 ## 【Build】
+### 【Windows with visual studio】
++ open project root dir with visual studio
++ select configuration to 'x86-Debug' or 'x86-Release' as you like, Default is 'x86-Debug'
++ select build all
++ lauch main.exe either from vs ide or file resouce management is ok.
+```
+1> 已为配置“x86-Release”启动 CMake 生成。
+1> 命令行: "C:\Windows\system32\cmd.exe" /c "%SYSTEMROOT%\System32\chcp.com 65001 >NUL && "C:\PROGRAM FILES\MICROSOFT VISUAL STUDIO\2022\COMMUNITY\COMMON7\IDE\COMMONEXTENSIONS\MICROSOFT\CMAKE\CMake\bin\cmake.exe"  -G "Ninja"  -DCMAKE_BUILD_TYPE:STRING="RelWithDebInfo" -DCMAKE_INSTALL_PREFIX:PATH="D:\code\wow\dbc_sql\out\install\x86-Release" -DCMAKE_C_COMPILER:FILEPATH="C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.34.31933/bin/Hostx86/x86/cl.exe" -DCMAKE_CXX_COMPILER:FILEPATH="C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.34.31933/bin/Hostx86/x86/cl.exe"  -DCMAKE_MAKE_PROGRAM="C:\PROGRAM FILES\MICROSOFT VISUAL STUDIO\2022\COMMUNITY\COMMON7\IDE\COMMONEXTENSIONS\MICROSOFT\CMAKE\Ninja\ninja.exe" "D:\code\wow\dbc_sql" 2>&1"
+1> 工作目录: D:\code\wow\dbc_sql\out\build\x86-Release
+1> [CMake] -- The C compiler identification is MSVC 19.34.31935.0
+1> [CMake] -- The CXX compiler identification is MSVC 19.34.31935.0
+1> [CMake] -- Detecting C compiler ABI info
+1> [CMake] -- Detecting C compiler ABI info - done
+1> [CMake] -- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.34.31933/bin/Hostx86/x86/cl.exe - skipped
+1> [CMake] -- Detecting C compile features
+1> [CMake] -- Detecting C compile features - done
+1> [CMake] -- Detecting CXX compiler ABI info
+1> [CMake] -- Detecting CXX compiler ABI info - done
+1> [CMake] -- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.34.31933/bin/Hostx86/x86/cl.exe - skipped
+1> [CMake] -- Detecting CXX compile features
+1> [CMake] -- Detecting CXX compile features - done
+1> [CMake] CMAKE_SYSTEM_NAME: Windows
+1> [CMake] CMAKE_CXX_COMPILER_ID: MSVC
+1> [CMake] -- D:/code/wow/dbc_sql/header/Spell.cpp
+1> [CMake] -- Configuring done
+1> [CMake] -- Generating done
+1> [CMake] -- Build files have been written to: D:/code/wow/dbc_sql/out/build/x86-Release
+1> 已提取 CMake 变量。
+1> 已提取源文件和标头。
+1> 已提取代码模型。
+1> 已提取工具链配置。
+1> 已提取包含路径。
+1> CMake 生成完毕。
+
+--------------------------------------------------------------------------------------------------------------
+
+>------ 全部生成 已启动: 项目: dbc_sql，配置: x86-Release ------
+  [0/2] Re-checking globbed directories...
+  [1/8] Building CXX object CMakeFiles\generate.dir\generate.cpp.obj
+  [2/8] Linking CXX executable generate.exe
+  [3/8] cmd.exe /C "cd /D D:\code\wow\dbc_sql\out\build\x86-Release && .\generate"
+  ######################################     start generate .h/.cpp     ######################################
+  
+  -------------Convert [Spell]
+  
+  23544,816621
+  
+  -------------Generate [Spell]
+  
+      [Generate] Spell.h &Spell.cpp done...
+  
+  [4/8] Building CXX object CMakeFiles\main.dir\progressbar.cpp.obj
+  [5/8] Building CXX object CMakeFiles\main.dir\main.cpp.obj
+  [6/8] Building CXX object CMakeFiles\main.dir\dbc.cpp.obj
+  [7/8] Building CXX object CMakeFiles\main.dir\header\Spell.cpp.obj
+  [8/8] Linking CXX executable main.exe
+
+全部生成 已成功。
+
+--------------------------------------------------------------------------------------------------------------
+
+############################################################################################################
+#####  All original DBC files can be found here: https://wowdev.wiki/Category:DBC_Vanilla              #####
+############################################################################################################
+-------------find Spell.dbc
+    [Dbc<struct Spell_record,23544,816621>::Load] start: Spell
+        size: 17109089
+        dbc file:D:\code\wow\dbc_sql\out\build\x86-Release\..\..\..\dbc\Spell.dbc
+        magic:1128416343
+        record_count:23544
+        field_count:173
+        record_size:692
+        string_block_size:816621
+    [Dbc<struct Spell_record,23544,816621>::DumpSql] start: Spell
+        sql file:D:\code\wow\dbc_sql\out\build\x86-Release\..\..\..\sql\Spell.sql
+        Spell - Creating the SQL table struct...
+        Spell - DONE
+        Spell - Dumping data...
+==================================================== 100%
+        Spell - DONE
+        Spell - Closed
+
+
+D:\code\wow\dbc_sql\out\build\x86-Release\main.exe (进程 5156)已退出，代码为 0。
+要在调试停止时自动关闭控制台，请启用“工具”->“选项”->“调试”->“调试停止时自动关闭控制台”。
+按任意键关闭此窗口. . .
+
+```
+
 ### 【Windows with mingw】 
 open project root dir with clion
+
 ```
 "D:\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" D:\code\wow\dbc_sql
 -- The C compiler identification is GNU 9.2.0
