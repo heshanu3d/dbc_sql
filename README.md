@@ -19,7 +19,82 @@ The converter contains two procedure:
   
 
 ## 【Build】
+### 【Windows with mingw】 
+open project root dir with clion
+```
+"D:\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" D:\code\wow\dbc_sql
+-- The C compiler identification is GNU 9.2.0
+-- The CXX compiler identification is GNU 9.2.0
+-- Check for working C compiler: D:/sdk/MINGW/bin/gcc.exe
+-- Check for working C compiler: D:/sdk/MINGW/bin/gcc.exe -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: D:/sdk/MINGW/bin/g++.exe
+-- Check for working CXX compiler: D:/sdk/MINGW/bin/g++.exe -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- D:/code/wow/dbc_sql/header/Spell.cpp
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/code/wow/dbc_sql/cmake-build-debug
 
+[Finished]
+```
++ select target to build_and_run_main
++ click build button
++ this will turn out as a command below 
++ "D:\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" --build D:\code\wow\dbc_sql\cmake-build-debug --target build_and_run_main -- -j 8
+```
+====================[ Build | build_and_run_main | Debug ]======================
+"D:\JetBrains\CLion 2020.1.1\bin\cmake\win\bin\cmake.exe" --build D:\code\wow\dbc_sql\cmake-build-debug --target build_and_run_main -- -j 8
+Scanning dependencies of target generate
+[ 14%] Building CXX object CMakeFiles/generate.dir/generate.cpp.obj
+[ 28%] Linking CXX executable generate.exe
+[ 28%] Built target generate
+Scanning dependencies of target generate_header
+######################################     start generate .h/.cpp     ######################################
+-------------Convert [Spell]
+23544,816621
+-------------Generate [Spell]
+    [Generate] Spell.h &Spell.cpp done...
+[ 28%] Built target generate_header
+Scanning dependencies of target main
+[ 42%] Building CXX object CMakeFiles/main.dir/main.cpp.obj
+[ 57%] Building CXX object CMakeFiles/main.dir/dbc.cpp.obj
+[ 71%] Building CXX object CMakeFiles/main.dir/header/Spell.cpp.obj
+[ 85%] Building CXX object CMakeFiles/main.dir/progressbar.cpp.obj
+[100%] Linking CXX executable main.exe
+[100%] Built target main
+Scanning dependencies of target build_and_run_main
+############################################################################################################
+#####  All original DBC files can be found here: https://wowdev.wiki/Category:DBC_Vanilla              #####
+############################################################################################################
+-------------find Spell.dbc
+    [Load] start: Spell
+        size: 17109089
+        dbc file:D:\code\wow\dbc_sql\cmake-build-debug\..\dbc\Spell.dbc
+        magic:1128416343
+        record_count:23544
+        field_count:173
+        record_size:692
+        string_block_size:816621
+    [DumpSql] start: Spell
+        sql file:D:\code\wow\dbc_sql\cmake-build-debug\..\sql\Spell.sql
+        Spell - Creating the SQL table struct...
+        Spell - DONE
+        Spell - Dumping data...
+=
+        Spell - DONE
+        Spell - Closed
+
+
+[100%] Built target build_and_run_main
+```
+### 【Linux】
 I think your compiler should be gcc-9.xx at least  because it must support filesystem.Or you can rewrite it yourself to get rid of filesystem usage, that's not hard.
 `sudo apt-get install g++-multilib` is required when build on x64 platform.
 
